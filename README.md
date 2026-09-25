@@ -1,59 +1,49 @@
-# GeradorCertificado
+<div align="center">
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+  # 🎓 Gerador de Certificados
 
-## Development server
+  **Uma aplicação web reativa e moderna para criação, gestão e visualização de certificados digitais.**
 
-To start a local development server, run:
+  ![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+  ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+  ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+  ![License](https://img.shields.io/badge/License-MIT-green.style=for-the-badge)
 
-```bash
-ng serve
-```
+</div>
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 📌 Sobre o Projeto
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+O **Gerador de Certificados** é um sistema desenvolvido em Angular projetado para otimizar o fluxo de emissão, listagem e verificação individual de certificados. O projeto aplica boas práticas de arquitetura front-end, aproveitando o poder dos *Standalone Components*, tipagem estrita com *TypeScript* e roteamento dinâmico.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🚀 Funcionalidades Principais
 
-```bash
-ng generate --help
-```
+- 📋 **Listagem Dinâmica:** Exibição clara e organizada de todos os certificados cadastrados.
+- 🔍 **Visualização Detalhada:** Rota parametrizada (`/certificados/:id`) para consultar detalhes específicos de cada certificado.
+- ➕ **Formulário de Emissão:** Interface intuitiva para registro de novos alunos e atividades.
+- 🎨 **Interface Reativa:** Utilização de classes dinâmicas (`ngClass`) e navegação fluida com `RouterLink`.
 
-## Building
+---
 
-To build the project run:
+## 🛠️ Tecnologias e Conceitos Utilizados
 
-```bash
-ng build
-```
+- **[Angular](https://angular.dev/):** Framework principal para a construção da interface SPA.
+- **[TypeScript](https://www.typescriptlang.org/):** Garantia de tipagem segura com interfaces personalizadas.
+- **Angular Router:** Gerenciamento de navegação e passagem de parâmetros via URL (`ActivatedRoute`).
+- **Services e Dependency Injection:** Centralização e compartilhamento da regra de negócio/dados entre componentes.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 📁 Estrutura do Projeto
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```text
+src/
+ └── app/
+      ├── _components/      # Componentes reutilizáveis (Navbar, Botões, etc.)
+      ├── _services/        # Serviços para gestão de dados
+      ├── interfaces/       # Definições de tipos e contratos TypeScript
+      └── pages/            # Páginas e views principais da aplicação
