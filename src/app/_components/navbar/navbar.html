@@ -1,25 +1,12 @@
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <a routerLink="/" class="navbar-logo">
-      <img src="navbar/logo.svg" alt="logo">
-    </a>
-
-    <div class="collapse navbar-collapse justify-content-end">
-      <ul class="navbar-nav">
-
-        <li class="nav-item d-flex align-items-center">
-          <i class="ph ph-medal" [ngClass]="{'active' : rlaListaCertificado.isActive}"></i>
-          <a routerLink="/" #rlaListaCertificado="routerLinkActive" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}" class="nav-link">Lista
-            de certificados</a>
-        </li>
-
-        <li class="nav-item d-flex align-items-center ms-3">
-          <i class="ph ph-circles-three-plus" [ngClass]="{'active' : rlaGerarCertificado.isActive}"></i>
-          <a routerLink="/certificados/novo" #rlaGerarCertificado="routerLinkActive" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}"
-            class="nav-link">Gerar certificado</a>
-        </li>
-
-      </ul>
-    </div>
-  </div>
-</nav>
+<mat-toolbar class="barra">
+  <a routerLink="/home" class="navbar-logo">
+    <img src="navbar/logo.svg" alt="Gerador de certificados">
+  </a>
+  <nav aria-label="Menu principal">
+    <!-- O logotipo retorna ao início e os links ficam dentro da navegação principal. -->
+    <a mat-button routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page"><mat-icon>home</mat-icon>Início</a>
+    <a mat-button routerLink="/certificados" routerLinkActive="active" ariaCurrentWhenActive="page"><mat-icon>workspace_premium</mat-icon>Certificados</a>
+    <a mat-button routerLink="/cursos" routerLinkActive="active" ariaCurrentWhenActive="page"><mat-icon>school</mat-icon>Cursos</a>
+  </nav>
+</mat-toolbar>
+<!-- Os três links mudam a página exibida e destacam a seção selecionada. -->

@@ -14,7 +14,7 @@ body {
 
 .custom-subtitle {
   font-weight: 400;
-  font-style: 14px;
+  font-size: 14px;
   line-height: 20px;
   letter-spacing: 0;
   text-align: center;
@@ -27,3 +27,111 @@ body {
   margin-bottom: 32px;
 }
 
+:root {
+  --cert-azul-escuro: #1a2856;
+  --cert-azul: #3b5ac2;
+  --cert-texto-suave: #64748b;
+  --cert-borda: #e2e8f0;
+  --cert-fundo-suave: #f8fafc;
+  --cert-fonte: "Inter", sans-serif;
+
+  --mat-sys-primary: var(--cert-azul);
+  --mat-sys-on-primary: #fff;
+  --mat-sys-on-surface: var(--cert-azul-escuro);
+  --mat-sys-on-surface-variant: var(--cert-texto-suave);
+  --mat-sys-outline: var(--cert-borda);
+  --mat-sys-outline-variant: var(--cert-borda);
+  --mat-sys-error: #d71d1d;
+  --mat-sys-brand-font-family: var(--cert-fonte);
+  --mat-sys-plain-font-family: var(--cert-fonte);
+
+  --mat-button-filled-container-shape: 6px;
+  --mat-button-filled-container-color: var(--cert-azul-escuro);
+  --mat-button-filled-label-text-font: var(--cert-fonte);
+  --mat-button-filled-label-text-weight: 600;
+  --mat-button-text-container-shape: 6px;
+  --mat-button-text-label-text-font: var(--cert-fonte);
+  --mat-button-text-label-text-weight: 600;
+  --mat-button-outlined-container-shape: 6px;
+  --mat-button-outlined-label-text-font: var(--cert-fonte);
+  --mat-button-outlined-outline-color: var(--cert-borda);
+  --mat-card-outlined-container-shape: 8px;
+  --mat-card-outlined-container-color: #fff;
+  --mat-card-outlined-outline-color: var(--cert-borda);
+  --mat-dialog-container-shape: 8px;
+  --mat-dialog-container-color: #fff;
+  --mat-form-field-container-height: 44px;
+  --mat-form-field-container-vertical-padding: 10px;
+  --mat-form-field-container-text-font: var(--cert-fonte);
+  --mat-form-field-container-text-size: 14px;
+  --mat-form-field-outlined-container-shape: 6px;
+  --mat-form-field-outlined-label-text-font: var(--cert-fonte);
+  --mat-form-field-outlined-label-text-size: 14px;
+  --mat-form-field-outlined-label-text-color: var(--cert-azul-escuro);
+  --mat-form-field-outlined-hover-outline-color: var(--cert-azul);
+  --mat-form-field-outlined-focus-outline-width: 1px;
+  --mat-table-background-color: #fff;
+  --mat-table-header-container-height: 44px;
+  --mat-table-header-headline-font: var(--cert-fonte);
+  --mat-table-row-item-label-text-font: var(--cert-fonte);
+}
+
+body { color: var(--cert-azul-escuro); }
+.custom-subtitle { margin-bottom: 0; }
+
+.page-content { max-width: 800px; margin: 0 auto 32px; }
+.form-page { max-width: 672px; }
+.data-card { padding: clamp(16px, 4vw, 32px); margin-top: 32px; }
+.page-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.table-scroll {
+  overflow-x: auto;
+  margin-top: 20px;
+  border: 1px solid var(--cert-borda);
+  border-radius: 8px;
+}
+.table-scroll table { min-width: 580px; }
+.table-scroll thead { background: var(--cert-fundo-suave); }
+.table-scroll td:first-child { font-weight: 600; }
+.table-scroll td:last-child { white-space: nowrap; }
+.table-scroll td[colspan] { padding: 24px 16px; font-weight: 400; color: var(--cert-texto-suave); }
+.table-scroll button:last-child { --mat-button-text-label-text-color: var(--mat-sys-error); }
+
+.form-grid { display: grid; gap: 12px; }
+.form-grid mat-form-field { width: 100%; }
+.form-grid .page-actions mat-form-field { flex: 1 1 180px; width: auto; }
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.field-note { margin-top: -8px; color: var(--cert-texto-suave); }
+
+.form-page .form-grid > .page-actions:last-child { margin-top: 8px; }
+.form-page button[type="submit"] {
+  flex: 1 1 auto;
+  --mat-button-filled-container-height: 48px;
+  --mat-button-filled-label-text-size: 16px;
+}
+.form-page button[type="submit"]:enabled {
+  background-image: linear-gradient(90deg, var(--cert-azul-escuro), #334ea9);
+}
+
+.activity-list {
+  list-style: none;
+  margin: 0;
+  border: 1px solid var(--cert-borda);
+  border-radius: 8px;
+  padding: 4px 16px;
+}
+.activity-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+.activity-list li + li { border-top: 1px solid var(--cert-borda); }
+.activity-list button { flex: 0 0 auto; color: var(--mat-sys-error); }
+
+.form-card-title {
+  margin: 0 0 20px;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 700;
+}

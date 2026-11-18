@@ -1,0 +1,44 @@
+{
+  "certificados": [
+    {
+      "id": "cert-01",
+      "nomeAluno": "Mariana Alves",
+      "cursoReferencia": "curso-01",
+      "curso": "Fundamentos de Angular",
+      "cargaHoraria": 20,
+      "dataEmissao": "2026-10-22",
+      "codigoValidacao": "CERT-2026-001",
+      "atividades": [
+        "Criação de componentes standalone",
+        "Consumo de uma API REST"
+      ]
+    },
+    {
+      "id": "cert-02",
+      "nomeAluno": "Rafael Costa",
+      "cursoReferencia": "curso-02",
+      "curso": "TypeScript na prática",
+      "cargaHoraria": 12,
+      "dataEmissao": "2026-11-05",
+      "codigoValidacao": "CERT-2026-002",
+      "atividades": [
+        "Modelagem com interfaces",
+        "Validação de dados"
+      ]
+    }
+  ],
+  "cursos": [
+    {
+      "id": "curso-01",
+      "nomeCurso": "Fundamentos de Angular",
+      "cargaHorariaPadrao": 20,
+      "instrutor": "Camila Ribeiro"
+    },
+    {
+      "id": "curso-02",
+      "nomeCurso": "TypeScript na prática",
+      "cargaHorariaPadrao": 12,
+      "instrutor": "Diego Martins"
+    }
+  ]
+}

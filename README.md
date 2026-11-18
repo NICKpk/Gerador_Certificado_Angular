@@ -11,31 +11,39 @@
 
 </div>
 
----
+Aplicação Angular 22 para cadastrar cursos, emitir certificados, consultar o histórico e baixar a arte original em PNG.
 
-## 📌 Sobre o Projeto
+## Executar localmente
 
-O **Gerador de Certificados** é um sistema desenvolvido em Angular projetado para otimizar o fluxo de emissão, listagem e verificação individual de certificados. O projeto aplica boas práticas de arquitetura front-end, aproveitando o poder dos *Standalone Components*, tipagem estrita com *TypeScript* e roteamento dinâmico.
+Use o Node.js 24. Abra um terminal na raiz do projeto.
 
----
+```sh
+npm ci
+npm run backend
+```
 
-## 🚀 Funcionalidades Principais
+Mantenha o backend em execução. Em outro terminal, na mesma pasta:
 
-- 📋 **Listagem Dinâmica:** Exibição clara e organizada de todos os certificados cadastrados.
-- 🔍 **Visualização Detalhada:** Rota parametrizada (`/certificados/:id`) para consultar detalhes específicos de cada certificado.
-- ➕ **Formulário de Emissão:** Interface intuitiva para registro de novos alunos e atividades.
-- 🎨 **Interface Reativa:** Utilização de classes dinâmicas (`ngClass`) e navegação fluida com `RouterLink`.
+```sh
+npm start
+```
 
----
+Acesse http://localhost:4200. O servidor Angular encaminha as chamadas de `/api` para o json-server em `http://127.0.0.1:3000`. Na primeira execução, o script copia os exemplos de `db.seed.json` para `db.json`. Os dois cadastros gravam no arquivo local `db.json`, que fica fora do Git.
 
-## 🛠️ Tecnologias e Conceitos Utilizados
+- **Início** abre o formulário de emissão. Selecione um curso, confira a carga horária sugerida e adicione as atividades.
+- **Certificados** permite visualizar, editar e excluir emissões. Na página do certificado, use **Download PNG** para exportar.
+- **Cursos** permite criar, editar e excluir cursos. Certificados já emitidos conservam os dados de curso gravados na emissão.
 
-- **[Angular](https://angular.dev/):** Framework principal para a construção da interface SPA.
-- **[TypeScript](https://www.typescriptlang.org/):** Garantia de tipagem segura com interfaces personalizadas.
-- **Angular Router:** Gerenciamento de navegação e passagem de parâmetros via URL (`ActivatedRoute`).
-- **Services e Dependency Injection:** Centralização e compartilhamento da regra de negócio/dados entre componentes.
+Se houver registros da versão anterior na mesma origem do navegador, use **Importar histórico deste navegador** em **Certificados**. Os campos de curso e carga horária ficam em branco até serem preenchidos.
 
----
+## Verificar o projeto
+
+```sh
+npm run build
+npm test -- --watch=false
+```
+
+O proxy é aplicado pelo servidor de desenvolvimento. Uma implantação do build precisa encaminhar `/api` a um backend persistente.
 
 ## 📁 Estrutura do Projeto
 

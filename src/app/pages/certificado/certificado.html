@@ -1,30 +1,54 @@
-<div class="d-flex flex-column align-items-center">
-  <div class="d-flex justify-content-between align-items-center menu-certificado w-100">
-    <div routerLink="/" class="d-flex align-items-center btn-voltar">
-      <i class="ph ph-arrow-left"></i>
-      <p class="m-0">Voltar</p>
-    </div>
-    <app-secondary-button (click)="downloadCertificado()" phClass="ph ph-download-simple"
-      textoBotao="Download"></app-secondary-button>
+<section class="d-flex flex-column align-items-center">
+  <div class="d-flex flex-wrap justify-content-between align-items-center menu-certificado w-100">
+    <a mat-button routerLink="/certificados"><mat-icon>arrow_back</mat-icon>Voltar</a>
+    @if (certificado(); as item) {
+      <div class="page-actions">
+        <!-- O cabeçalho leva ao histórico e mostra ações após carregar o documento. -->
+        <a mat-button [routerLink]="['/certificados', item.id, 'editar']">Editar</a>
+        <button mat-flat-button [disabled]="baixando()" (click)="downloadCertificado()">
+          <mat-icon>download</mat-icon>{{ baixando() ? 'Preparando…' : 'Download PNG' }}
+        </button>
+      </div>
+      <!-- Os controles de edição e download usam o certificado que está aberto. -->
+    }
   </div>
-  @if (certificado) {
-  <div #certificadoContainer class="certificado d-flex justify-content-center align-items-center">
-    <img class="icone-medalha" src="certificate/certificate_ribbon.png" alt="icone de medalha">
-    <div class="conteudo-certificado">
-      <img class="img-assinatura" src="certificate/certificate_signature.svg" alt="assinatura">
-      <div class="info-certificado d-flex flex-column align-items-center">
-        <div class="titulo-subtitulo-certificado">
-          <h1>CERTIFICADO DE CONCLUSÃO</h1>
-          <P>Este certificado comprova que</P>
-        </div>
-        <p class="nome-aluno">{{certificado.nome}}</p>
-        <div>
-          <p class="lista-atividade-titulo">Concluiu com sucesso as seguintes atividades:</p>
-          <p class="lista-atividade">{{certificado.atividades.join(', ')}}</p>
+  @if (carregando()) {
+    <p role="status">Carregando certificado…</p>
+  }
+  <!-- O estado de carregamento dá lugar à arte quando a consulta termina. -->
+  @if (certificado(); as item) {
+    <div class="certificate-scroll">
+      <div #certificadoContainer class="certificado d-flex justify-content-center align-items-center">
+        <img class="icone-medalha" src="certificate/certificate_ribbon.png" alt="">
+        <div class="conteudo-certificado">
+          <!-- A moldura e a medalha ficam dentro da área capturada no PNG. -->
+          <img class="img-assinatura" src="certificate/certificate_signature.svg" alt="Assinatura">
+          <!-- A assinatura faz parte da arte exportada. -->
+          <div class="info-certificado d-flex flex-column align-items-center">
+            <div class="titulo-subtitulo-certificado">
+              <h1>CERTIFICADO DE CONCLUSÃO</h1>
+              <p>Este certificado comprova que</p>
+            </div>
+            <!-- A arte começa com o título e apresenta o aluno logo abaixo. -->
+            <p class="nome-aluno">{{ item.nomeAluno }}</p>
+            @if (item.curso) {
+              <p class="lista-atividade">Concluiu o curso {{ item.curso }} ({{ item.cargaHoraria }} h).</p>
+            }
+            <div>
+              <!-- Certificados antigos podem não ter curso, mas mantêm as atividades. -->
+              <p class="lista-atividade-titulo">Concluiu com sucesso as seguintes atividades:</p>
+              <p class="lista-atividade">{{ item.atividades.join(', ') }}</p>
+            </div>
+          </div>
+          <p class="data-emissao">Emitido em {{ item.dataEmissao | date:'dd/MM/yyyy' }}</p>
+          <!-- O rodapé reúne a data e o código que identificam a emissão. -->
+          <p class="data-emissao codigo-validacao">Código: {{ item.codigoValidacao }}</p>
         </div>
       </div>
-      <p class="data-emissao">Emitido em {{certificado.dataEmissao}}</p>
     </div>
-  </div>
+  } @else if (!carregando()) {
+    <!-- Se o documento não vier da API, mostramos uma opção para consultar de novo. -->
+    <p role="alert">Certificado indisponível.</p>
+    <button mat-button (click)="carregar()">Tentar novamente</button>
   }
-</div>
+</section>

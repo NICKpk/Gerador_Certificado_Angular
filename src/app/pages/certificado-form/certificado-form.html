@@ -1,49 +1,86 @@
-<form #form="ngForm" novalidate class="d-flex flex-column align-items-center">
-  <div class="content-titles">
-    <h1 class="fw-bold custom-title">Geração de certificados</h1>
-    <p class="mb-4 custom-subtitle">Preencha os dados para gerar o certificado</p>
-  </div>
-
-  <div class="custom-card w-100">
-    <h2 class="card-title">Novo certificado</h2>
-    <div class="mb-3 custom-input-group">
-      <label [ngClass]="{'text-danger-label': compoInvalido(nomeRef)}" for="nome" class="form-label">Nome</label>
-      <input [(ngModel)]="certificado.nome" name="nome" #nomeRef="ngModel" maxlength="150" required id="nome" type="text"
-        class="form-control custom-input" placeholder="Nome do aluno">
-      @if (compoInvalido(nomeRef)) {
-      <div class="error-message d-flex align-items-center">
-        <i class="ph ph-warning-circle"></i>
-        <p class="m-0">O nome do aluno é obrigatório</p>
-      </div>
+<section class="page-content form-page">
+  <h1 class="custom-title">{{ id ? 'Editar certificado' : 'Geração de certificados' }}</h1>
+  <p class="custom-subtitle">{{ id ? 'Atualize os dados da emissão.' : 'Preencha os dados para emitir o certificado.' }}</p>
+  <mat-card class="data-card" appearance="outlined">
+    @if (carregando()) {
+      <!-- O cabeçalho indica se a página está criando ou editando um certificado. -->
+      <p role="status">Carregando dados…</p>
+    } @else if (erro()) {
+      <p role="alert">Não foi possível carregar os dados da emissão.</p>
+      <button mat-button (click)="carregar()">Tentar novamente</button>
+    } @else {
+      <!-- Só mostramos o formulário quando as consultas terminam com sucesso. -->
+      @if (!cursos().length) {
+        <p>Cadastre um curso para emitir novos certificados. <a routerLink="/cursos">Gerenciar cursos</a></p>
       }
-    </div>
-    <div class="mb-3 d-flex align-items-end custom-input-group">
-      <div class="flex-grow-1 me-2">
-        <label for="atividade" class="form-label">Atividade</label>
-        <input #atividadeRef="ngModel" name="atividade" maxlength="50" required [(ngModel)]="atividade" id="atividade"
-          type="text" class="form-control custom-input" placeholder="Atividade exercida">
-      </div>
-      <app-secondary-button (click)="adicionarAtividade()" [disasbled]="!atividade || atividade.length == 0" textoBotao="Adicionar"
-        phClass="ph ph-plus"></app-secondary-button>
-    </div>
-    <div class="atividade-group">
-      <label class="form-label">Lista de atividades</label>
-      <div class="item-list w-100">
-        @for (atividade of certificado.atividades; track $index){
-        <div class="item">
-          <span class="item-text">{{atividade}}</span>
-          <div (click)="excluirAtividade($index)" class="remove-btn">
-            <i class="ph-bold ph-x"></i>
-          </div>
+      <h2 class="form-card-title">{{ id ? "Dados do certificado" : "Novo certificado" }}</h2>
+      <!-- O título identifica os dados reunidos no cartão de emissão. -->
+      <form #form="ngForm" (ngSubmit)="salvar(form)" class="form-grid">
+        <mat-form-field appearance="outline">
+          <!-- Quando falta um curso, o link leva direto ao cadastro. -->
+          <mat-label>Nome do aluno</mat-label>
+          <input matInput name="nomeAluno" [(ngModel)]="item().nomeAluno" required maxlength="150" pattern=".*\S.*">
+          <mat-error>Informe o nome do aluno.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <!-- O nome é obrigatório e não pode ser composto apenas por espaços. -->
+          <mat-label>Curso</mat-label>
+          <mat-select name="curso" [ngModel]="item().cursoReferencia" (ngModelChange)="escolherCurso($event)" [required]="!id">
+            @for (curso of cursos(); track curso.id) {
+              <mat-option [value]="curso.id">{{ curso.nomeCurso }}</mat-option>
+              <!-- Os cursos cadastrados aparecem como opções do seletor. -->
+            }
+          </mat-select>
+          <mat-error>Selecione um curso.</mat-error>
+        </mat-form-field>
+        @if (id && item().curso) { <p class="field-note">Curso registrado na emissão: {{ item().curso }}</p> }
+        <!-- O nome gravado continua visível se o curso tiver sido excluído. -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Carga horária (h)</mat-label>
+            <input matInput name="carga" type="number" min="1" [(ngModel)]="item().cargaHoraria" [required]="!id || !!item().cursoReferencia">
+            <mat-error>Informe uma carga horária positiva.</mat-error>
+            <!-- A carga sugerida pelo curso pode ser ajustada antes de salvar. -->
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Data de emissão</mat-label>
+            <input matInput name="data" type="date" [(ngModel)]="item().dataEmissao" required>
+            <mat-error>Informe a data de emissão.</mat-error>
+            <!-- A data pode ser corrigida na edição. -->
+          </mat-form-field>
         </div>
-        @if ($index + 1 != certificado.atividades.length) {
-        <hr>
-        }
-        }
-      </div>
-    </div>
-
-    <app-primary-button (click)="submit()" [disasbled]="!formValido()" textoBotao="Gerar certificado"></app-primary-button>
-
-  </div>
-</form>
+        <div class="page-actions">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Atividade</mat-label>
+            <!-- Este campo prepara a próxima atividade que será incluída na lista. -->
+            <input matInput name="atividade" [(ngModel)]="atividade" maxlength="50"
+              (keydown.enter)="$event.preventDefault(); adicionarAtividade()">
+          </mat-form-field>
+          <button mat-stroked-button type="button" [disabled]="!atividade.trim()" (click)="adicionarAtividade()">Adicionar</button>
+        </div>
+        <!-- O botão e a tecla Enter adicionam a atividade ao rascunho. -->
+        @if (item().atividades.length) {
+          <ul class="activity-list">
+            @for (texto of item().atividades; track $index) {
+              <li>{{ texto }}
+                <button mat-icon-button type="button" [attr.aria-label]="'Remover ' + texto" (click)="removerAtividade($index)">
+                  <!-- Cada atividade tem um botão próprio para removê-la. -->
+                  <mat-icon>close</mat-icon>
+                </button>
+              </li>
+            }
+          </ul>
+          <!-- A lista reúne as atividades que vão aparecer na arte do certificado. -->
+        } @else { <p>Adicione pelo menos uma atividade.</p> }
+        <div class="page-actions">
+          @if (id) { <a mat-button [routerLink]="['/certificados', id]">Cancelar</a> }
+          <button mat-flat-button type="submit" [disabled]="form.invalid || !item().atividades.length || salvando()">
+            {{ salvando() ? 'Salvando…' : id ? 'Salvar alterações' : 'Emitir certificado' }}
+            <!-- O botão fica bloqueado durante a gravação ou se algum dado estiver faltando. -->
+          </button>
+        </div>
+      </form>
+    }
+  </mat-card>
+  <!-- O cartão contém o formulário e os avisos da página. -->
+</section>

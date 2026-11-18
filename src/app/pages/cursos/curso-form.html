@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{ original ? 'Editar curso' : 'Novo curso' }}</h2>
+<form #form="ngForm" (ngSubmit)="salvar(form)">
+  <mat-dialog-content class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome do curso</mat-label>
+      <!-- O título acompanha a operação e o primeiro campo identifica o curso. -->
+      <input matInput name="nome" [(ngModel)]="item.nomeCurso" required maxlength="100" pattern=".*\S.*">
+      <mat-error>Informe o nome do curso.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Carga horária padrão (h)</mat-label>
+      <!-- A duração padrão será sugerida no formulário de emissão. -->
+      <input matInput name="carga" type="number" min="1" [(ngModel)]="item.cargaHorariaPadrao" required>
+      <mat-error>Informe uma carga horária positiva.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Instrutor</mat-label>
+      <!-- O curso também precisa indicar quem é o responsável. -->
+      <input matInput name="instrutor" [(ngModel)]="item.instrutor" required maxlength="100" pattern=".*\S.*">
+      <mat-error>Informe o nome do instrutor.</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <!-- Os controles ficam no rodapé para cancelar ou gravar o cadastro. -->
+    <button mat-button type="button" mat-dialog-close [disabled]="salvando()">Cancelar</button>
+    <button mat-flat-button type="submit" [disabled]="form.invalid || salvando()">{{ salvando() ? 'Salvando…' : 'Salvar' }}</button>
+  </mat-dialog-actions>
+</form>

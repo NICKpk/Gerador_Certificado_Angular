@@ -127,3 +127,31 @@
   width: 64px;
   height: 64px;
 }
+
+
+.certificate-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.certificado {
+  min-height: 550px;
+  height: auto;
+  padding: 40px;
+}
+
+.conteudo-certificado {
+  min-height: 470px;
+  height: auto;
+  padding-bottom: 52px;
+  overflow-wrap: anywhere;
+}
+
+.info-certificado {
+  margin-bottom: 24px;
+  gap: 10px;
+}
+
+.codigo-validacao {
+  margin-top: 4px !important;
+}

@@ -1,0 +1,49 @@
+<section class="page-content">
+  <h1 class="custom-title">Cursos</h1>
+  <p class="custom-subtitle">Gerencie os cursos disponíveis para emissão.</p>
+  <mat-card class="data-card" appearance="outlined">
+    <div class="page-actions">
+      <!-- A página agrupa os cursos e o atalho para abrir o cadastro. -->
+      <button mat-flat-button [disabled]="ocupado() || erro()" (click)="editar()"><mat-icon>add</mat-icon>Novo curso</button>
+    </div>
+    @if (ocupado()) { <p role="status">Processando…</p> }
+    @if (erro()) {
+      <p role="alert">Não foi possível carregar os cursos.</p>
+      <!-- Quando o servidor falha, mostramos uma mensagem e liberamos nova consulta. -->
+      <button mat-button (click)="carregar()" [disabled]="ocupado()">Tentar novamente</button>
+    } @else {
+      <div class="table-scroll">
+        <table mat-table [dataSource]="itens()">
+          <ng-container matColumnDef="nome">
+            <!-- A tabela lê os cursos já carregados e começa pela coluna de nome. -->
+            <th mat-header-cell *matHeaderCellDef>Curso</th>
+            <td mat-cell *matCellDef="let item">{{ item.nomeCurso }}</td>
+          </ng-container>
+          <ng-container matColumnDef="carga">
+            <th mat-header-cell *matHeaderCellDef>Carga padrão</th>
+            <!-- O nome e a duração ajudam a identificar o curso na lista. -->
+            <td mat-cell *matCellDef="let item">{{ item.cargaHorariaPadrao }} h</td>
+          </ng-container>
+          <ng-container matColumnDef="instrutor">
+            <th mat-header-cell *matHeaderCellDef>Instrutor</th>
+            <td mat-cell *matCellDef="let item">{{ item.instrutor }}</td>
+            <!-- A duração tem unidade em horas e o instrutor aparece em outra coluna. -->
+          </ng-container>
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let item">
+              <button mat-button [disabled]="ocupado()" (click)="editar(item)">Editar</button>
+              <!-- O botão abre o formulário preenchido com o curso da linha. -->
+              <button mat-button [disabled]="ocupado()" (click)="excluir(item)">Excluir</button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+          <tr mat-row *matRowDef="let row; columns: colunas"></tr>
+          <!-- A mesma ordem de colunas vale para o cabeçalho e para cada registro. -->
+          <tr *matNoDataRow><td colspan="4">{{ ocupado() ? 'Carregando…' : 'Nenhum curso cadastrado.' }}</td></tr>
+        </table>
+      </div>
+    }
+  </mat-card>
+  <!-- Quando a tabela está vazia, a mensagem orienta sobre o estado da consulta. -->
+</section>

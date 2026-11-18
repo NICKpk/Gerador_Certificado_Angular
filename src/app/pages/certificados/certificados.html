@@ -1,29 +1,54 @@
-<div class="d-flex flex-column align-items-center">
-  <div class="content-titles">
-    <h1 class="fw-bold custom-title">Certificados gerados</h1>
-    <p class="mb-4 custom-subtitle">Visualize todos os certificados gerados</p>
-  </div>
-
-  @if (certificados.length == 0) {
-  <div class="custom-card w-100">
-    <i class="ph ph-certificate"></i>
-    <div class="custom-warning-titles">
-      <h3 class="card-title">Nenhum certificado gerado</h3>
-      <p class="card-subtitle">Gere certificados para consultar o histórico</p>
+<section class="page-content">
+  <h1 class="custom-title">Certificados gerados</h1>
+  <p class="custom-subtitle">Consulte, edite e baixe os certificados emitidos.</p>
+  <mat-card class="data-card" appearance="outlined">
+    <div class="page-actions">
+      <!-- O cartão reúne a tabela e os atalhos para emissão e importação. -->
+      <a mat-flat-button routerLink="/certificados/novo"><mat-icon>add</mat-icon>Novo certificado</a>
+      @if (legado()) {
+        <button mat-button [disabled]="ocupado()" (click)="importar()">Importar histórico deste navegador</button>
+      }
     </div>
-    <app-secondary-button routerLink="/certificados/novo" textoBotao="Gerar certificado"></app-secondary-button>
-  </div>
-  }
-
-  @if (certificados.length > 0) {
-  <div class="list-certificates w-100">
-    @for (certificado of certificados; track $index) {
-    <app-item-certificado [nomeAluno]="certificado.nome" [dataEmissao]="certificado.dataEmissao"
-      [id]="certificado.id"></app-item-certificado>
+    <!-- A importação aparece apenas para quem tem registros antigos. -->
+    @if (ocupado()) { <p role="status">Processando…</p> }
+    @if (erro()) {
+      <p role="alert">Não foi possível carregar os certificados.</p>
+      <button mat-button (click)="carregar()" [disabled]="ocupado()">Tentar novamente</button>
+    } @else {
+      <!-- Uma falha na API é mostrada separadamente do histórico vazio. -->
+      <div class="table-scroll">
+        <table mat-table [dataSource]="itens()">
+          <ng-container matColumnDef="aluno">
+            <th mat-header-cell *matHeaderCellDef>Aluno</th>
+            <td mat-cell *matCellDef="let item">{{ item.nomeAluno }}</td>
+            <!-- A primeira coluna identifica o aluno. -->
+          </ng-container>
+          <ng-container matColumnDef="curso">
+            <th mat-header-cell *matHeaderCellDef>Curso</th>
+            <td mat-cell *matCellDef="let item">{{ item.curso || '—' }}</td>
+          </ng-container>
+          <!-- Registros antigos sem curso mostram um traço. -->
+          <ng-container matColumnDef="emissao">
+            <th mat-header-cell *matHeaderCellDef>Emissão</th>
+            <td mat-cell *matCellDef="let item">{{ item.dataEmissao | date:'dd/MM/yyyy' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="acoes">
+            <!-- A data é mostrada no formato brasileiro antes dos controles da linha. -->
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let item">
+              <a mat-button [routerLink]="['/certificados', item.id]">Ver</a>
+              <a mat-button [routerLink]="['/certificados', item.id, 'editar']">Editar</a>
+              <button mat-button [disabled]="ocupado()" (click)="excluir(item)">Excluir</button>
+              <!-- Cada ação recebe o registro da linha atual. -->
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+          <tr mat-row *matRowDef="let row; columns: colunas"></tr>
+          <tr *matNoDataRow><td colspan="4">{{ ocupado() ? 'Carregando…' : 'Nenhum certificado gerado.' }}</td></tr>
+          <!-- A tabela exibe as colunas configuradas ou informa que ainda está vazia. -->
+        </table>
+      </div>
     }
-  </div>
-  }
-
-
-
-</div>
+  </mat-card>
+</section>
+<!-- O contêiner permite rolar a tabela em telas estreitas. -->
